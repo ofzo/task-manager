@@ -1,7 +1,7 @@
 [package]
 name = "task-manger"
 version = "0.1.0"
-authors = ["roadup <fangwei.roadup@bytedance.com>"]
+authors = ["roadup <roadup.cc@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
