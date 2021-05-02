@@ -10,21 +10,26 @@ use std::path::PathBuf;
 pub struct Task {
     pub text: String,
 
+    pub parity: i32,
     #[serde(with = "ts_seconds")]
     pub create_time: DateTime<Utc>,
 }
 
 impl Task {
-    pub fn new(text: String) -> Task {
+    pub fn new(text: String, parity: i32) -> Task {
         let create_time: DateTime<Utc> = Utc::now();
-        Task { text, create_time }
+        Task {
+            text,
+            create_time,
+            parity,
+        }
     }
 }
 
 impl fmt::Display for Task {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let create_at = self.create_time.with_timezone(&Local).format("%F %H:%M");
-        write!(f, "{:<50} [{}]", self.text, create_at)
+        write!(f, "[{:>4}] {:<50} [{}]", self.parity, self.text, create_at)
     }
 }
 
@@ -44,7 +49,7 @@ pub fn add_task(file_path: PathBuf, task: Task) -> Result<()> {
     Ok(())
 }
 
-pub fn complete_task(file_path: PathBuf, position: usize) -> Result<()> {
+pub(crate) fn complete_task(file_path: PathBuf, position: usize) -> Result<()> {
     let file = OpenOptions::new().read(true).write(true).open(file_path)?;
 
     let mut tasks = collect_task(&file)?;

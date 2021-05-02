@@ -1,5 +1,10 @@
+use std::num::ParseIntError;
 use std::path::PathBuf;
 use structopt::StructOpt;
+
+fn parse_hex(s: &str) -> Result<i32, ParseIntError> {
+    i32::from_str_radix(s, 10)
+}
 
 #[derive(Debug, StructOpt)]
 pub enum Action {
@@ -8,6 +13,10 @@ pub enum Action {
         /// The task description text.
         #[structopt()]
         text: String,
+
+        /// The task parity.
+        // #[structopt(parse(try_from_str=parse_hex))]
+        parity: i32,
     },
     /// Remove an entry from the task file by position.
     Done {

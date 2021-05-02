@@ -15,13 +15,12 @@ fn find_default_task_file() -> Option<PathBuf> {
 
 fn main() -> anyhow::Result<()> {
     let CommandLineArgs { action, task_file } = CommandLineArgs::from_args();
-
     let task_file = task_file
         .or_else(find_default_task_file)
         .ok_or(anyhow!("Failed to find task file !!"))?;
 
     match action {
-        Add { text } => tasks::add_task(task_file, tasks::Task::new(text)),
+        Add { text, parity } => tasks::add_task(task_file, tasks::Task::new(text, parity)),
         List => tasks::list_tasks(task_file),
         Done { position } => tasks::complete_task(task_file, position),
     }?;
